@@ -2,9 +2,9 @@ program Maze;
 
 uses
   Forms,
-  UnitMain in 'UnitMain.pas' {FormMain},
-  UnitMaze in 'UnitMaze.pas',
-  UnitStack in 'UnitStack.pas';
+  Main in 'Main.pas' {FormMain},
+  uMain in 'uMain.pas',
+  Stack in 'Stack.pas';
 
 {$R *.res}
 

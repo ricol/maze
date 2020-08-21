@@ -1,4 +1,4 @@
-unit UnitMain;
+unit Main;
 
 {
 CONTACT: WANGXINGHE1983@GMAIL.COM
@@ -76,7 +76,7 @@ var
 
 implementation
 
-uses UnitMaze;
+uses Maze;
 
 {$R *.dfm}
 

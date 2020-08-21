@@ -1,4 +1,4 @@
-unit UnitMaze;
+unit uMaze;
 
 interface
 
@@ -46,7 +46,7 @@ procedure DestroyMazePath();
 
 implementation
 
-uses UnitStack;
+uses Stack;
 
 var
   GPath: array[0..LEN] of TPoint;
