@@ -332,7 +332,7 @@ end;
 
 procedure TFormMain.ShowMaze;
 var
-  i, j, tmpX, tmpY: integer;
+  i, j, m, n: integer;
 begin
   for i := 0 to X - 1 do
     for j := 0 to Y - 1 do
@@ -344,37 +344,37 @@ begin
   end;
   for i := 0 to X - 1 do
   begin
-    tmpX := IToX(i);
-    tmpY := JToY(0);
-    PaintBoxMain.Canvas.Rectangle(tmpX, tmpY, tmpX + R, tmpY + R);
-    tmpX := IToX(i);
-    tmpY := JToY(Y - 1);
-    PaintBoxMain.Canvas.Rectangle(tmpX, tmpY, tmpX + R, tmpY + R);
+    m := IToX(i);
+    n := JToY(0);
+    PaintBoxMain.Canvas.Rectangle(m, n, m + R, n + R);
+    m := IToX(i);
+    n := JToY(Y - 1);
+    PaintBoxMain.Canvas.Rectangle(m, n, m + R, n + R);
   end;
   for j := 0 to Y - 1 do
   begin
-    tmpX := IToX(X - 1);
-    tmpY := JToY(j);
-    PaintBoxMain.Canvas.Rectangle(tmpX, tmpY, tmpX + R, tmpY + R);
-    tmpX := IToX(0);
-    tmpY := JToY(j);
-    PaintBoxMain.Canvas.Rectangle(tmpX, tmpY, tmpX + R, tmpY + R);
+    m := IToX(X - 1);
+    n := JToY(j);
+    PaintBoxMain.Canvas.Rectangle(m, n, m + R, n + R);
+    m := IToX(0);
+    n := JToY(j);
+    PaintBoxMain.Canvas.Rectangle(m, n, m + R, n + R);
   end;
   FormResize(nil);
 end;
 
 procedure TFormMain.ShowOne(i, j: integer);
 var
-  tmpX, tmpY: integer;
+  m, n: integer;
 begin
-  tmpX := IToX(i);
-  tmpY := JToY(j);
+  m := IToX(i);
+  n := JToY(j);
   if ((i = 1) and (j = 1)) or ((i = X - 2) and (j = Y - 2)) then
     with PaintBoxMain do
     begin
       Canvas.Pen.Color := clBlack;
       Canvas.Brush.Color := clBlue;
-      Canvas.Rectangle(tmpX, tmpY, tmpX + R, tmpY + R);
+      Canvas.Rectangle(m, n, m + R, n + R);
     end
   else
     with PaintBoxMain do
@@ -384,7 +384,7 @@ begin
         Canvas.Brush.Color := clWhite
       else if Maze[i, j] = WALL then
         Canvas.Brush.Color := clBlack;
-      Canvas.Rectangle(tmpX, tmpY, tmpX + R, tmpY + R);
+      Canvas.Rectangle(m, n, m + R, n + R);
     end;
 end;
 

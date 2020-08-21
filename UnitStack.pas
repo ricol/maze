@@ -14,7 +14,7 @@ var
 
 procedure InitStack();
 procedure DestroyStack();
-procedure PushStack(tmpPoint: TPoint);
+procedure PushStack(p: TPoint);
 function PopStack(): TPoint;
 function StackIsFull(): boolean;
 function StackIsEmpty(): boolean;
@@ -33,21 +33,21 @@ begin
   GPoint := 0;
 end;
 
-procedure PushStack(tmpPoint: TPoint);
+procedure PushStack(p: TPoint);
 begin
-  GStack[GPoint].x := tmpPoint.x;
-  GStack[GPoint].y := tmpPoint.y;
+  GStack[GPoint].x := p.x;
+  GStack[GPoint].y := p.y;
   inc(GPoint);
 end;
 
 function PopStack(): TPoint;
 var
-  tmpPoint: TPoint;
+  p: TPoint;
 begin
   dec(GPoint);
-  tmpPoint.x := GStack[GPoint].x;
-  tmpPoint.y := GStack[GPoint].y;
-  result := tmpPoint;
+  p.x := GStack[GPoint].x;
+  p.y := GStack[GPoint].y;
+  result := p;
 end;
 
 function StackIsFull(): boolean;

@@ -32,15 +32,15 @@ const
 procedure InitMaze();
 procedure FreeMaze();
 procedure InitMazeData();
-procedure SetMazeData(i, j: integer; tmpSquare: TSquare);
+procedure SetMazeData(i, j: integer; square: TSquare);
 function GetMazeData(i, j: integer): TSquare;
 function XtoI(X: integer): integer;
 function YtoJ(Y: integer): integer;
 function ItoX(I: integer): integer;
 function JtoY(J: integer): integer;
 procedure SearchPath();
-function HasNextPos(tmpPos: TPoint): boolean;
-function IsIllegal(tmpPos: TPoint): boolean;
+function HasNextPos(pos: TPoint): boolean;
+function IsIllegal(pos: TPoint): boolean;
 procedure InitMazePath();
 procedure DestroyMazePath();
 
@@ -81,14 +81,14 @@ begin
   end;
 end;
 
-function HaveSearchedInGPath(tmpPoint: TPoint): boolean;
+function HaveSearchedInGPath(p: TPoint): boolean;
 var
   i: integer;
 begin
   result := false;
   for i := Low(GPath) to GLen do
   begin
-    if (GPath[i].X = tmpPoint.X) and (GPath[i].Y = tmpPoint.Y) then
+    if (GPath[i].X = p.X) and (GPath[i].Y = p.Y) then
     begin
       result := true;
       break;
@@ -110,10 +110,10 @@ begin
     result := true;
 end;
 
-procedure PutPointInGPath(tmpPoint: TPoint);
+procedure PutPointInGPath(p: TPoint);
 begin
-  GPath[GLen].X := tmpPoint.X;
-  GPath[GLen].Y := tmpPoint.Y;
+  GPath[GLen].X := p.X;
+  GPath[GLen].Y := p.Y;
   inc(GLen);
 end;
 
@@ -156,9 +156,9 @@ begin
   Maze[X - 2, Y - 2] := BLANK;
 end;
 
-procedure SetMazeData(i, j: integer; tmpSquare: TSquare);
+procedure SetMazeData(i, j: integer; square: TSquare);
 begin
-  Maze[i, j] := tmpSquare;
+  Maze[i, j] := square;
 end;
 
 function GetMazeData(i, j: integer): TSquare;
@@ -186,222 +186,222 @@ begin
   result := J * MulY + ADDY;
 end;
 
-function HasNextPos(tmpPos: TPoint): boolean;
+function HasNextPos(pos: TPoint): boolean;
 var
-  tmpDown, tmpRight, tmpUp, tmpLeft: TPoint;
+  down, right, up, left: TPoint;
 begin
   result := false;
-  tmpDown.X := tmpPos.X;
-  tmpDown.Y := tmpPos.Y + 1;
-  tmpRight.X := tmpPos.X + 1;
-  tmpRight.Y := tmpPos.Y;
-  tmpUp.X := tmpPos.X;
-  tmpUp.Y := tmpPos.Y - 1;
-  tmpLeft.X := tmpPos.X - 1;
-  tmpLeft.Y := tmpPos.Y;
+  down.X := pos.X;
+  down.Y := pos.Y + 1;
+  right.X := pos.X + 1;
+  right.Y := pos.Y;
+  up.X := pos.X;
+  up.Y := pos.Y - 1;
+  left.X := pos.X - 1;
+  left.Y := pos.Y;
   if Priority = PriorityUP then
   begin
-    if IsIllegal(tmpUp) and (not HaveSearchedInGPath(tmpUp)) and (GetMazeData(tmpUp.X, tmpUp.Y) = BLANK) then
+    if IsIllegal(up) and (not HaveSearchedInGPath(up)) and (GetMazeData(up.X, up.Y) = BLANK) then
       result := true
-    else if IsIllegal(tmpLeft) and (not HaveSearchedInGPath(tmpLeft)) and (GetMazeData(tmpLeft.X, tmpLeft.Y) = BLANK) then
+    else if IsIllegal(left) and (not HaveSearchedInGPath(left)) and (GetMazeData(left.X, left.Y) = BLANK) then
       result := true
-    else if IsIllegal(tmpDown) and (not HaveSearchedInGPath(tmpDown)) and (GetMazeData(tmpDown.X, tmpDown.Y) = BLANK) then
+    else if IsIllegal(down) and (not HaveSearchedInGPath(down)) and (GetMazeData(down.X, down.Y) = BLANK) then
       result := true
-    else if IsIllegal(tmpRight) and (not HaveSearchedInGPath(tmpRight)) and (GetMazeData(tmpRight.X, tmpRight.Y) = BLANK) then
+    else if IsIllegal(right) and (not HaveSearchedInGPath(right)) and (GetMazeData(right.X, right.Y) = BLANK) then
       result := true;
   end
   else if Priority = PriorityRIGHT then
   begin
-    if IsIllegal(tmpRight) and (not HaveSearchedInGPath(tmpRight)) and (GetMazeData(tmpRight.X, tmpRight.Y) = BLANK) then
+    if IsIllegal(right) and (not HaveSearchedInGPath(right)) and (GetMazeData(right.X, right.Y) = BLANK) then
       result := true
-    else if IsIllegal(tmpUp) and (not HaveSearchedInGPath(tmpUp)) and (GetMazeData(tmpUp.X, tmpUp.Y) = BLANK) then
+    else if IsIllegal(up) and (not HaveSearchedInGPath(up)) and (GetMazeData(up.X, up.Y) = BLANK) then
       result := true
-    else if IsIllegal(tmpLeft) and (not HaveSearchedInGPath(tmpLeft)) and (GetMazeData(tmpLeft.X, tmpLeft.Y) = BLANK) then
+    else if IsIllegal(left) and (not HaveSearchedInGPath(left)) and (GetMazeData(left.X, left.Y) = BLANK) then
       result := true
-    else if IsIllegal(tmpDown) and (not HaveSearchedInGPath(tmpDown)) and (GetMazeData(tmpDown.X, tmpDown.Y) = BLANK) then
+    else if IsIllegal(down) and (not HaveSearchedInGPath(down)) and (GetMazeData(down.X, down.Y) = BLANK) then
       result := true;
   end
   else if Priority = PriorityDOWN then
   begin
-    if IsIllegal(tmpDown) and (not HaveSearchedInGPath(tmpDown)) and (GetMazeData(tmpDown.X, tmpDown.Y) = BLANK) then
+    if IsIllegal(down) and (not HaveSearchedInGPath(down)) and (GetMazeData(down.X, down.Y) = BLANK) then
       result := true
-    else if IsIllegal(tmpRight) and (not HaveSearchedInGPath(tmpRight)) and (GetMazeData(tmpRight.X, tmpRight.Y) = BLANK) then
+    else if IsIllegal(right) and (not HaveSearchedInGPath(right)) and (GetMazeData(right.X, right.Y) = BLANK) then
       result := true
-    else if IsIllegal(tmpUp) and (not HaveSearchedInGPath(tmpUp)) and (GetMazeData(tmpUp.X, tmpUp.Y) = BLANK) then
+    else if IsIllegal(up) and (not HaveSearchedInGPath(up)) and (GetMazeData(up.X, up.Y) = BLANK) then
       result := true
-    else if IsIllegal(tmpLeft) and (not HaveSearchedInGPath(tmpLeft)) and (GetMazeData(tmpLeft.X, tmpLeft.Y) = BLANK) then
+    else if IsIllegal(left) and (not HaveSearchedInGPath(left)) and (GetMazeData(left.X, left.Y) = BLANK) then
       result := true;
   end
   else if Priority = PriorityLEFT then
   begin
-    if IsIllegal(tmpLeft) and (not HaveSearchedInGPath(tmpLeft)) and (GetMazeData(tmpLeft.X, tmpLeft.Y) = BLANK) then
+    if IsIllegal(left) and (not HaveSearchedInGPath(left)) and (GetMazeData(left.X, left.Y) = BLANK) then
       result := true
-    else if IsIllegal(tmpDown) and (not HaveSearchedInGPath(tmpDown)) and (GetMazeData(tmpDown.X, tmpDown.Y) = BLANK) then
+    else if IsIllegal(down) and (not HaveSearchedInGPath(down)) and (GetMazeData(down.X, down.Y) = BLANK) then
       result := true
-    else if IsIllegal(tmpRight) and (not HaveSearchedInGPath(tmpRight)) and (GetMazeData(tmpRight.X, tmpRight.Y) = BLANK) then
+    else if IsIllegal(right) and (not HaveSearchedInGPath(right)) and (GetMazeData(right.X, right.Y) = BLANK) then
       result := true
-    else if IsIllegal(tmpUp) and (not HaveSearchedInGPath(tmpUp)) and (GetMazeData(tmpUp.X, tmpUp.Y) = BLANK) then
+    else if IsIllegal(up) and (not HaveSearchedInGPath(up)) and (GetMazeData(up.X, up.Y) = BLANK) then
       result := true;
   end
   else if Priority = PriorityUpOther then
   begin
-    if IsIllegal(tmpUp) and (not HaveSearchedInGPath(tmpUp)) and (GetMazeData(tmpUp.X, tmpUp.Y) = BLANK) then
+    if IsIllegal(up) and (not HaveSearchedInGPath(up)) and (GetMazeData(up.X, up.Y) = BLANK) then
       result := true
-    else if IsIllegal(tmpRight) and (not HaveSearchedInGPath(tmpRight)) and (GetMazeData(tmpRight.X, tmpRight.Y) = BLANK) then
+    else if IsIllegal(right) and (not HaveSearchedInGPath(right)) and (GetMazeData(right.X, right.Y) = BLANK) then
       result := true
-    else if IsIllegal(tmpDown) and (not HaveSearchedInGPath(tmpDown)) and (GetMazeData(tmpDown.X, tmpDown.Y) = BLANK) then
+    else if IsIllegal(down) and (not HaveSearchedInGPath(down)) and (GetMazeData(down.X, down.Y) = BLANK) then
       result := true
-    else if IsIllegal(tmpLeft) and (not HaveSearchedInGPath(tmpLeft)) and (GetMazeData(tmpLeft.X, tmpLeft.Y) = BLANK) then
+    else if IsIllegal(left) and (not HaveSearchedInGPath(left)) and (GetMazeData(left.X, left.Y) = BLANK) then
       result := true;
   end
   else if Priority = PriorityRightOther then
   begin
-    if IsIllegal(tmpRight) and (not HaveSearchedInGPath(tmpRight)) and (GetMazeData(tmpRight.X, tmpRight.Y) = BLANK) then
+    if IsIllegal(right) and (not HaveSearchedInGPath(right)) and (GetMazeData(right.X, right.Y) = BLANK) then
       result := true
-    else if IsIllegal(tmpDown) and (not HaveSearchedInGPath(tmpDown)) and (GetMazeData(tmpDown.X, tmpDown.Y) = BLANK) then
+    else if IsIllegal(down) and (not HaveSearchedInGPath(down)) and (GetMazeData(down.X, down.Y) = BLANK) then
       result := true
-    else if IsIllegal(tmpLeft) and (not HaveSearchedInGPath(tmpLeft)) and (GetMazeData(tmpLeft.X, tmpLeft.Y) = BLANK) then
+    else if IsIllegal(left) and (not HaveSearchedInGPath(left)) and (GetMazeData(left.X, left.Y) = BLANK) then
       result := true
-    else if IsIllegal(tmpUp) and (not HaveSearchedInGPath(tmpUp)) and (GetMazeData(tmpUp.X, tmpUp.Y) = BLANK) then
+    else if IsIllegal(up) and (not HaveSearchedInGPath(up)) and (GetMazeData(up.X, up.Y) = BLANK) then
       result := true;
   end
   else if Priority = PriorityDownOther then
   begin
-    if IsIllegal(tmpDown) and (not HaveSearchedInGPath(tmpDown)) and (GetMazeData(tmpDown.X, tmpDown.Y) = BLANK) then
+    if IsIllegal(down) and (not HaveSearchedInGPath(down)) and (GetMazeData(down.X, down.Y) = BLANK) then
       result := true
-    else if IsIllegal(tmpLeft) and (not HaveSearchedInGPath(tmpLeft)) and (GetMazeData(tmpLeft.X, tmpLeft.Y) = BLANK) then
+    else if IsIllegal(left) and (not HaveSearchedInGPath(left)) and (GetMazeData(left.X, left.Y) = BLANK) then
       result := true
-    else if IsIllegal(tmpUp) and (not HaveSearchedInGPath(tmpUp)) and (GetMazeData(tmpUp.X, tmpUp.Y) = BLANK) then
+    else if IsIllegal(up) and (not HaveSearchedInGPath(up)) and (GetMazeData(up.X, up.Y) = BLANK) then
       result := true
-    else if IsIllegal(tmpRight) and (not HaveSearchedInGPath(tmpRight)) and (GetMazeData(tmpRight.X, tmpRight.Y) = BLANK) then
+    else if IsIllegal(right) and (not HaveSearchedInGPath(right)) and (GetMazeData(right.X, right.Y) = BLANK) then
       result := true;
   end
   else if Priority = PriorityLeftOther then
   begin
-    if IsIllegal(tmpLeft) and (not HaveSearchedInGPath(tmpLeft)) and (GetMazeData(tmpLeft.X, tmpLeft.Y) = BLANK) then
+    if IsIllegal(left) and (not HaveSearchedInGPath(left)) and (GetMazeData(left.X, left.Y) = BLANK) then
       result := true
-    else if IsIllegal(tmpUp) and (not HaveSearchedInGPath(tmpUp)) and (GetMazeData(tmpUp.X, tmpUp.Y) = BLANK) then
+    else if IsIllegal(up) and (not HaveSearchedInGPath(up)) and (GetMazeData(up.X, up.Y) = BLANK) then
       result := true
-    else if IsIllegal(tmpRight) and (not HaveSearchedInGPath(tmpRight)) and (GetMazeData(tmpRight.X, tmpRight.Y) = BLANK) then
+    else if IsIllegal(right) and (not HaveSearchedInGPath(right)) and (GetMazeData(right.X, right.Y) = BLANK) then
       result := true
-    else if IsIllegal(tmpDown) and (not HaveSearchedInGPath(tmpDown)) and (GetMazeData(tmpDown.X, tmpDown.Y) = BLANK) then
+    else if IsIllegal(down) and (not HaveSearchedInGPath(down)) and (GetMazeData(down.X, down.Y) = BLANK) then
       result := true;
   end;
 end;
 
-function IsIllegal(tmpPos: TPoint): boolean;
+function IsIllegal(pos: TPoint): boolean;
 begin
   result := true;
-  if (tmpPos.X <= 0) or (tmpPos.X >= X - 1) or (tmpPos.Y <= 0) or (tmpPos.Y >= Y - 1) then
+  if (pos.X <= 0) or (pos.X >= X - 1) or (pos.Y <= 0) or (pos.Y >= Y - 1) then
     result := false;
 end;
 
-function GetNextPos(tmpPos: TPoint): TPoint;
+function GetNextPos(pos: TPoint): TPoint;
 var
-  tmpDown, tmpRight, tmpUp, tmpLeft: TPoint;
+  down, right, up, left: TPoint;
 begin
-  tmpDown.X := tmpPos.X;
-  tmpDown.Y := tmpPos.Y + 1;
-  tmpRight.X := tmpPos.X + 1;
-  tmpRight.Y := tmpPos.Y;
-  tmpUp.X := tmpPos.X;
-  tmpUp.Y := tmpPos.Y - 1;
-  tmpLeft.X := tmpPos.X - 1;
-  tmpLeft.Y := tmpPos.Y;
+  down.X := pos.X;
+  down.Y := pos.Y + 1;
+  right.X := pos.X + 1;
+  right.Y := pos.Y;
+  up.X := pos.X;
+  up.Y := pos.Y - 1;
+  left.X := pos.X - 1;
+  left.Y := pos.Y;
   if Priority = PriorityUP then
   begin
-    if IsIllegal(tmpUp) and (not HaveSearchedInGPath(tmpUp)) and (GetMazeData(tmpUp.X, tmpUp.Y) = BLANK) then
-      result := tmpUp
-    else if IsIllegal(tmpLeft) and (not HaveSearchedInGPath(tmpLeft)) and (GetMazeData(tmpLeft.X, tmpLeft.Y) = BLANK) then
-      result := tmpLeft
-    else if IsIllegal(tmpDown) and (not HaveSearchedInGPath(tmpDown)) and (GetMazeData(tmpDown.X, tmpDown.Y) = BLANK) then
-      result := tmpDown
-    else if IsIllegal(tmpRight) and (not HaveSearchedInGPath(tmpRight)) and (GetMazeData(tmpRight.X, tmpRight.Y) = BLANK) then
-      result := tmpRight;
+    if IsIllegal(up) and (not HaveSearchedInGPath(up)) and (GetMazeData(up.X, up.Y) = BLANK) then
+      result := up
+    else if IsIllegal(left) and (not HaveSearchedInGPath(left)) and (GetMazeData(left.X, left.Y) = BLANK) then
+      result := left
+    else if IsIllegal(down) and (not HaveSearchedInGPath(down)) and (GetMazeData(down.X, down.Y) = BLANK) then
+      result := down
+    else if IsIllegal(right) and (not HaveSearchedInGPath(right)) and (GetMazeData(right.X, right.Y) = BLANK) then
+      result := right;
   end
   else if Priority = PriorityRIGHT then
   begin
-    if IsIllegal(tmpRight) and (not HaveSearchedInGPath(tmpRight)) and (GetMazeData(tmpRight.X, tmpRight.Y) = BLANK) then
-      result := tmpRight
-    else if IsIllegal(tmpUp) and (not HaveSearchedInGPath(tmpUp)) and (GetMazeData(tmpUp.X, tmpUp.Y) = BLANK) then
-      result := tmpUp
-    else if IsIllegal(tmpLeft) and (not HaveSearchedInGPath(tmpLeft)) and (GetMazeData(tmpLeft.X, tmpLeft.Y) = BLANK) then
-      result := tmpLeft
-    else if IsIllegal(tmpDown) and (not HaveSearchedInGPath(tmpDown)) and (GetMazeData(tmpDown.X, tmpDown.Y) = BLANK) then
-      result := tmpDown;
+    if IsIllegal(right) and (not HaveSearchedInGPath(right)) and (GetMazeData(right.X, right.Y) = BLANK) then
+      result := right
+    else if IsIllegal(up) and (not HaveSearchedInGPath(up)) and (GetMazeData(up.X, up.Y) = BLANK) then
+      result := up
+    else if IsIllegal(left) and (not HaveSearchedInGPath(left)) and (GetMazeData(left.X, left.Y) = BLANK) then
+      result := left
+    else if IsIllegal(down) and (not HaveSearchedInGPath(down)) and (GetMazeData(down.X, down.Y) = BLANK) then
+      result := down;
   end
   else if Priority = PriorityDOWN then
   begin
-    if IsIllegal(tmpDown) and (not HaveSearchedInGPath(tmpDown)) and (GetMazeData(tmpDown.X, tmpDown.Y) = BLANK) then
-      result := tmpDown
-    else if IsIllegal(tmpRight) and (not HaveSearchedInGPath(tmpRight)) and (GetMazeData(tmpRight.X, tmpRight.Y) = BLANK) then
-      result := tmpRight
-    else if IsIllegal(tmpUp) and (not HaveSearchedInGPath(tmpUp)) and (GetMazeData(tmpUp.X, tmpUp.Y) = BLANK) then
-      result := tmpUp
-    else if IsIllegal(tmpLeft) and (not HaveSearchedInGPath(tmpLeft)) and (GetMazeData(tmpLeft.X, tmpLeft.Y) = BLANK) then
-      result := tmpLeft;
+    if IsIllegal(down) and (not HaveSearchedInGPath(down)) and (GetMazeData(down.X, down.Y) = BLANK) then
+      result := down
+    else if IsIllegal(right) and (not HaveSearchedInGPath(right)) and (GetMazeData(right.X, right.Y) = BLANK) then
+      result := right
+    else if IsIllegal(up) and (not HaveSearchedInGPath(up)) and (GetMazeData(up.X, up.Y) = BLANK) then
+      result := up
+    else if IsIllegal(left) and (not HaveSearchedInGPath(left)) and (GetMazeData(left.X, left.Y) = BLANK) then
+      result := left;
   end
   else if Priority = PriorityLEFT then
   begin
-    if IsIllegal(tmpLeft) and (not HaveSearchedInGPath(tmpLeft)) and (GetMazeData(tmpLeft.X, tmpLeft.Y) = BLANK) then
-      result := tmpLeft
-    else if IsIllegal(tmpDown) and (not HaveSearchedInGPath(tmpDown)) and (GetMazeData(tmpDown.X, tmpDown.Y) = BLANK) then
-      result := tmpDown
-    else if IsIllegal(tmpRight) and (not HaveSearchedInGPath(tmpRight)) and (GetMazeData(tmpRight.X, tmpRight.Y) = BLANK) then
-      result := tmpRight
-    else if IsIllegal(tmpUp) and (not HaveSearchedInGPath(tmpUp)) and (GetMazeData(tmpUp.X, tmpUp.Y) = BLANK) then
-      result := tmpUp;
+    if IsIllegal(left) and (not HaveSearchedInGPath(left)) and (GetMazeData(left.X, left.Y) = BLANK) then
+      result := left
+    else if IsIllegal(down) and (not HaveSearchedInGPath(down)) and (GetMazeData(down.X, down.Y) = BLANK) then
+      result := down
+    else if IsIllegal(right) and (not HaveSearchedInGPath(right)) and (GetMazeData(right.X, right.Y) = BLANK) then
+      result := right
+    else if IsIllegal(up) and (not HaveSearchedInGPath(up)) and (GetMazeData(up.X, up.Y) = BLANK) then
+      result := up;
   end
   else if Priority = PriorityUpOther then
   begin
-    if IsIllegal(tmpUp) and (not HaveSearchedInGPath(tmpUp)) and (GetMazeData(tmpUp.X, tmpUp.Y) = BLANK) then
-      result := tmpUp
-    else if IsIllegal(tmpRight) and (not HaveSearchedInGPath(tmpRight)) and (GetMazeData(tmpRight.X, tmpRight.Y) = BLANK) then
-      result := tmpRight
-    else if IsIllegal(tmpDown) and (not HaveSearchedInGPath(tmpDown)) and (GetMazeData(tmpDown.X, tmpDown.Y) = BLANK) then
-      result := tmpDown
-    else if IsIllegal(tmpLeft) and (not HaveSearchedInGPath(tmpLeft)) and (GetMazeData(tmpLeft.X, tmpLeft.Y) = BLANK) then
-      result := tmpLeft;
+    if IsIllegal(up) and (not HaveSearchedInGPath(up)) and (GetMazeData(up.X, up.Y) = BLANK) then
+      result := up
+    else if IsIllegal(right) and (not HaveSearchedInGPath(right)) and (GetMazeData(right.X, right.Y) = BLANK) then
+      result := right
+    else if IsIllegal(down) and (not HaveSearchedInGPath(down)) and (GetMazeData(down.X, down.Y) = BLANK) then
+      result := down
+    else if IsIllegal(left) and (not HaveSearchedInGPath(left)) and (GetMazeData(left.X, left.Y) = BLANK) then
+      result := left;
   end
   else if Priority = PriorityRightOther then
   begin
-    if IsIllegal(tmpRight) and (not HaveSearchedInGPath(tmpRight)) and (GetMazeData(tmpRight.X, tmpRight.Y) = BLANK) then
-      result := tmpRight
-    else if IsIllegal(tmpDown) and (not HaveSearchedInGPath(tmpDown)) and (GetMazeData(tmpDown.X, tmpDown.Y) = BLANK) then
-      result := tmpDown
-    else if IsIllegal(tmpLeft) and (not HaveSearchedInGPath(tmpLeft)) and (GetMazeData(tmpLeft.X, tmpLeft.Y) = BLANK) then
-      result := tmpLeft
-    else if IsIllegal(tmpUp) and (not HaveSearchedInGPath(tmpUp)) and (GetMazeData(tmpUp.X, tmpUp.Y) = BLANK) then
-      result := tmpUp;
+    if IsIllegal(right) and (not HaveSearchedInGPath(right)) and (GetMazeData(right.X, right.Y) = BLANK) then
+      result := right
+    else if IsIllegal(down) and (not HaveSearchedInGPath(down)) and (GetMazeData(down.X, down.Y) = BLANK) then
+      result := down
+    else if IsIllegal(left) and (not HaveSearchedInGPath(left)) and (GetMazeData(left.X, left.Y) = BLANK) then
+      result := left
+    else if IsIllegal(up) and (not HaveSearchedInGPath(up)) and (GetMazeData(up.X, up.Y) = BLANK) then
+      result := up;
   end
   else if Priority = PriorityDownOther then
   begin
-    if IsIllegal(tmpDown) and (not HaveSearchedInGPath(tmpDown)) and (GetMazeData(tmpDown.X, tmpDown.Y) = BLANK) then
-      result := tmpDown
-    else if IsIllegal(tmpLeft) and (not HaveSearchedInGPath(tmpLeft)) and (GetMazeData(tmpLeft.X, tmpLeft.Y) = BLANK) then
-      result := tmpLeft
-    else if IsIllegal(tmpUp) and (not HaveSearchedInGPath(tmpUp)) and (GetMazeData(tmpUp.X, tmpUp.Y) = BLANK) then
-      result := tmpUp
-    else if IsIllegal(tmpRight) and (not HaveSearchedInGPath(tmpRight)) and (GetMazeData(tmpRight.X, tmpRight.Y) = BLANK) then
-      result := tmpRight;
+    if IsIllegal(down) and (not HaveSearchedInGPath(down)) and (GetMazeData(down.X, down.Y) = BLANK) then
+      result := down
+    else if IsIllegal(left) and (not HaveSearchedInGPath(left)) and (GetMazeData(left.X, left.Y) = BLANK) then
+      result := left
+    else if IsIllegal(up) and (not HaveSearchedInGPath(up)) and (GetMazeData(up.X, up.Y) = BLANK) then
+      result := up
+    else if IsIllegal(right) and (not HaveSearchedInGPath(right)) and (GetMazeData(right.X, right.Y) = BLANK) then
+      result := right;
   end
   else if Priority = PriorityLeftOther then
   begin
-    if IsIllegal(tmpLeft) and (not HaveSearchedInGPath(tmpLeft)) and (GetMazeData(tmpLeft.X, tmpLeft.Y) = BLANK) then
-      result := tmpLeft
-    else if IsIllegal(tmpUp) and (not HaveSearchedInGPath(tmpUp)) and (GetMazeData(tmpUp.X, tmpUp.Y) = BLANK) then
-      result := tmpUp
-    else if IsIllegal(tmpRight) and (not HaveSearchedInGPath(tmpRight)) and (GetMazeData(tmpRight.X, tmpRight.Y) = BLANK) then
-      result := tmpRight
-    else if IsIllegal(tmpDown) and (not HaveSearchedInGPath(tmpDown)) and (GetMazeData(tmpDown.X, tmpDown.Y) = BLANK) then
-      result := tmpDown;
+    if IsIllegal(left) and (not HaveSearchedInGPath(left)) and (GetMazeData(left.X, left.Y) = BLANK) then
+      result := left
+    else if IsIllegal(up) and (not HaveSearchedInGPath(up)) and (GetMazeData(up.X, up.Y) = BLANK) then
+      result := up
+    else if IsIllegal(right) and (not HaveSearchedInGPath(right)) and (GetMazeData(right.X, right.Y) = BLANK) then
+      result := right
+    else if IsIllegal(down) and (not HaveSearchedInGPath(down)) and (GetMazeData(down.X, down.Y) = BLANK) then
+      result := down;
   end;
 end;
 
 procedure SearchPath();
 var
   i: integer;
-  tmpPos, StartPos, EndPos: TPoint;
+  pos, StartPos, EndPos: TPoint;
 begin
   InitGPath();
   InitStack();
@@ -410,33 +410,33 @@ begin
   StartPos.Y := 1;
   EndPos.X := X - 2;
   EndPos.Y := Y - 2;
-  tmpPos.x := StartPos.X;
-  tmpPos.y := StartPos.Y;
+  pos.x := StartPos.X;
+  pos.y := StartPos.Y;
   repeat
-    if not GPathIsFull() and (not HaveSearchedInGPath(tmpPos)) then
-      PushStack(tmpPos);
-    if not GPathIsFull() and (not HaveSearchedInGPath(tmpPos)) then
-      PutPointInGPath(tmpPos);
-    if (tmpPos.X = EndPos.X) and (tmpPos.Y = EndPos.Y) then
+    if not GPathIsFull() and (not HaveSearchedInGPath(pos)) then
+      PushStack(pos);
+    if not GPathIsFull() and (not HaveSearchedInGPath(pos)) then
+      PutPointInGPath(pos);
+    if (pos.X = EndPos.X) and (pos.Y = EndPos.Y) then
     begin
       i := Low(MazePath);
       while not StackIsEmpty() do
       begin
-        tmpPos := PopStack();
-        MazePath[i] := tmpPos;
+        pos := PopStack();
+        MazePath[i] := pos;
         inc(i);
       end;
       bPathFound := true;
       exit;
     end;
-    while not HasNextPos(tmpPos) do
+    while not HasNextPos(pos) do
     begin
       if StackIsEmpty() then
         exit;
-      tmpPos := PopStack();
+      pos := PopStack();
     end;
-    PushStack(tmpPos);
-    tmpPos := GetNextPos(tmpPos);
+    PushStack(pos);
+    pos := GetNextPos(pos);
   until false;
   DestroyStack();
 end;
