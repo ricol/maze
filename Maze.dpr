@@ -3,8 +3,8 @@ program Maze;
 uses
   Forms,
   Main in 'Main.pas' {FormMain},
-  uMain in 'uMain.pas',
-  Stack in 'Stack.pas';
+  Stack in 'Stack.pas',
+  uMaze in 'uMaze.pas';
 
 {$R *.res}
 

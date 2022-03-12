@@ -76,7 +76,7 @@ var
 
 implementation
 
-uses Maze;
+uses uMaze;
 
 {$R *.dfm}
 
